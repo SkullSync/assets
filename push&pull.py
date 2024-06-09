@@ -3,9 +3,10 @@
 
 # NOTE: Run at your own risk.
 
+import os
 import subprocess
 
-def commit_with_conventional_message(message):
+def commit_with_conventional_message(message, branch):
     # Check if the commit message is conventional
     if not is_conventional(message):
         print("Error: Commit message is not conventional")
@@ -17,13 +18,12 @@ def commit_with_conventional_message(message):
     # Commit with the conventional message
     subprocess.run(["git", "commit", "-m", message])
 
-def push_to_github():
     # Push to GitHub
-    subprocess.run(["git", "push", "origin", "master"])
+    subprocess.run(["git", "push", "origin", branch])
 
-def pull_from_github():
+def pull_from_github(branch):
     # Pull from GitHub
-    subprocess.run(["git", "pull", "origin", "master"])
+    subprocess.run(["git", "pull", "origin", branch])
 
 def is_conventional(message):
     # Check if the commit message is conventional
@@ -33,14 +33,39 @@ def is_conventional(message):
             return True
     return False
 
-# Get the conventional commit message from the user
-message = input("Enter a conventional commit message (e.g. 'feat: add a new feature'): ")
+# Get the conventional commit message type from the user
+print("Select a conventional commit message type:")
+print("1. feat (new feature)")
+print("2. fix (bug fix)")
+print("3. perf (performance improvement)")
+print("4. refactor (code refactoring)")
+print("5. style (code style change)")
+print("6. test (new test)")
+print("7. docs (documentation change)")
+print("8. build (build process change)")
+print("9. chore (miscellaneous task)")
+print("10. revert (revert previous commit)")
+
+option = int(input("Enter the number of your chosen option: "))
+
+commit_types = ["feat", "fix", "perf", "refactor", "style", "test", "docs", "build", "chore", "revert"]
+commit_type = commit_types[option - 1]
+
+# Get the scope and description from the user
+scope = input("Enter the scope (optional): ")
+description = input("Enter the description: ")
+
+# Get the branch name from the user
+branch = "master" # or "main", "development"
+
+# Construct the conventional commit message
+if scope:
+    message = f"{commit_type}({scope}): {description}"
+else:
+    message = f"{commit_type}: {description}"
 
 # Commit with the conventional message
-commit_with_conventional_message(message)
+commit_with_conventional_message(message, branch)
 
 # Pull from GitHub
-pull_from_github()
-
-# Push to GitHub
-push_to_github()
+pull_from_github(branch)
