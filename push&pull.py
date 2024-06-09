@@ -29,7 +29,7 @@ def is_conventional(message):
     # Check if the commit message is conventional
     conventional_types = ["build", "chore", "ci", "docs", "feat", "fix", "perf", "refactor", "revert", "style", "test"]
     for type in conventional_types:
-        if message.startswith(f"{type}:"):
+        if message.startswith(f"{type}:") or message.startswith(f"{type}("):
             return True
     return False
 
