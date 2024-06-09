@@ -42,4 +42,6 @@ cd assets
 
 3. Use `commit.py` to commit your changes and create a **Pull Request**
 
+*`commit.py` comes with built-in conventional commit types with emojis. Choose the type, write scope(optional) and clear & concise description and it will push the changes to the repository.*
+
 > For further assistance, raise an `issue` or send an email eshanized@proton.me 
