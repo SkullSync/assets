@@ -1,4 +1,8 @@
-import os
+# Author        : Eshan Roy <eshanized@proton.me>
+# Author URL    : https://eshanized.github.io
+
+# NOTE: Run at your own risk.
+
 import subprocess
 
 def commit_with_conventional_message(message):
@@ -35,8 +39,8 @@ message = input("Enter a conventional commit message (e.g. 'feat: add a new feat
 # Commit with the conventional message
 commit_with_conventional_message(message)
 
-# Push to GitHub
-push_to_github()
-
 # Pull from GitHub
 pull_from_github()
+
+# Push to GitHub
+push_to_github()
