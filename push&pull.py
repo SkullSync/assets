@@ -15,11 +15,11 @@ def commit_with_conventional_message(message):
 
 def push_to_github():
     # Push to GitHub
-    subprocess.run(["git", "push", "origin", "main"])
+    subprocess.run(["git", "push", "origin", "master"])
 
 def pull_from_github():
     # Pull from GitHub
-    subprocess.run(["git", "pull", "origin", "main"])
+    subprocess.run(["git", "pull", "origin", "master"])
 
 def is_conventional(message):
     # Check if the commit message is conventional
