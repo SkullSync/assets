@@ -15,11 +15,11 @@ def commit_with_conventional_message(message):
 
 def push_to_github():
     # Push to GitHub
-    subprocess.run(["git", "push", "origin", "master"])
+    subprocess.run(["git", "push", "origin", "main"])
 
 def pull_from_github():
     # Pull from GitHub
-    subprocess.run(["git", "pull", "origin", "master"])
+    subprocess.run(["git", "pull", "origin", "main"])
 
 def is_conventional(message):
     # Check if the commit message is conventional
@@ -29,7 +29,14 @@ def is_conventional(message):
             return True
     return False
 
-# Example usage
-commit_with_conventional_message("feat: add a new feature")
+# Get the conventional commit message from the user
+message = input("Enter a conventional commit message (e.g. 'feat: add a new feature'): ")
+
+# Commit with the conventional message
+commit_with_conventional_message(message)
+
+# Push to GitHub
 push_to_github()
+
+# Pull from GitHub
 pull_from_github()
