@@ -1,73 +1,35 @@
-# Author        : Eshan Roy <eshanized@proton.me>
-# Author URL    : https://eshanized.github.io
-
-# NOTE: Run at your own risk!
-
-# allows us to spawn new processes, connect to their input/output/error pipes, 
-# and obtain their return codes.
+import os
 import subprocess
 
-# handle pulling changes from the remote repository
-def git_pull():
-    # catch any errors that occur within the block
-    try:
-        # executes the git pull origin master command using the subprocess.check_call function
-        subprocess.check_call(
-            [
-                'git', 
-                'pull', 
-                'origin', 
-                'master',
-            ]
-        )
-        print(
-            "Pull successful"
-        )
-    # catches any errors that occur during the execution of the git pull command
-    except subprocess.CalledProcessError:
-        print(
-            "Error pulling from remote repository"
-        )
+def commit_with_conventional_message(message):
+    # Check if the commit message is conventional
+    if not is_conventional(message):
+        print("Error: Commit message is not conventional")
+        return
 
-# handles pushing changes to the remote repository
-def git_push(commit_message):
-    try:
-        subprocess.check_call(
-            [
-                'git', 
-                'add', 
-                '.'
-            ]
-        )
-        subprocess.check_call(
-            [
-                'git', 
-                'commit', 
-                '-m', 
-                commit_message,
-            ]
-        )
-        subprocess.check_call(
-            [
-                'git', 
-                'push', 
-                'origin', 
-                'master',
-            ]
-        )
-        print(
-            "Push successful"
-        )
-    except subprocess.CalledProcessError:
-        print(
-            "Error pushing to remote repository"
-        )
+    # Add all changes
+    subprocess.run(["git", "add", "."])
 
-# Execution
-git_pull()
-# prompts the user to input a commit message, 
-# which will be used when committing the changes to the local repository
-commit_message = input("Enter commit message: ")
-# calls the git_push() function, 
-# passing the commit message entered by the user as an argument
-git_push(commit_message)
+    # Commit with the conventional message
+    subprocess.run(["git", "commit", "-m", message])
+
+def push_to_github():
+    # Push to GitHub
+    subprocess.run(["git", "push", "origin", "main"])
+
+def pull_from_github():
+    # Pull from GitHub
+    subprocess.run(["git", "pull", "origin", "main"])
+
+def is_conventional(message):
+    # Check if the commit message is conventional
+    conventional_types = ["build", "chore", "ci", "docs", "feat", "fix", "perf", "refactor", "revert", "style", "test"]
+    for type in conventional_types:
+        if message.startswith(f"{type}:"):
+            return True
+    return False
+
+# Example usage
+commit_with_conventional_message("feat: add a new feature")
+push_to_github()
+pull_from_github()
