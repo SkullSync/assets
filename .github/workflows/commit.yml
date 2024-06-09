@@ -1,0 +1,35 @@
+name: Conventional Commit Checker
+
+on:
+  push:
+    branches:
+      - main
+      - master
+      - development
+
+jobs:
+  conventional-commit-checker:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Get latest commit message
+        run: |
+          LATEST_COMMIT_MESSAGE=$(git log -1 --format=%s)
+          echo "LATEST_COMMIT_MESSAGE=$LATEST_COMMIT_MESSAGE" >> $GITHUB_ENV
+
+      - name: Check conventional commit message
+        run: |
+          conventional_types=("build" "chore" "ci" "docs" "feat" "fix" "perf" "refactor" "revert" "style" "test")
+          commit_emojis=("build"="🏗️" "chore"="🧹" "ci"="🤖" "docs"="📚" "feat"="🎉" "fix"="🔧" "perf"="⚡️" "refactor"="💡" "revert"="🚨" "style"="💄" "test"="🧪")
+
+          for type in "${conventional_types[@]}"; do
+            if [[ $LATEST_COMMIT_MESSAGE == *"${commit_emojis[$type]} $type:"* ]] || [[ $LATEST_COMMIT_MESSAGE == *"${commit_emojis[$type]} $type("* ]]; then
+              echo "Conventional commit message found: $LATEST_COMMIT_MESSAGE"
+              exit 0
+            fi
+          done
+
+          echo "Error: Commit message is not conventional"
+          exit 1
